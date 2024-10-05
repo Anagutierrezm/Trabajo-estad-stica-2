@@ -1,2 +1,32 @@
 # Trabajo-estad-stica-2
-Este repositorio es para colocar los avances del trabajo del curso de Estadística para el Análisis Político 2 de la Pontificia Universidad Católica del Perú
+
+Diccionario del trabajo:
+
+Imnigrantes = número deinmigrantes de cada país hasta el año 2020
+
+Industrial = tasa de crecimiento de la producción industrial por país 
+
+Poblacion = número de personas dentro del país hasta el año 2023
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
