@@ -16,19 +16,19 @@ IDH = índice de desarrollo humano por país
 
 Gobierno = tipo de gobierno:
 
-República parlamentaria = 1
+  República parlamentaria = 1
 
-República presidencial = 2
+  República presidencial = 2
 
-República semipresidencial = 3
+  República semipresidencial = 3
 
-Monarquía constituyente = 4
+  Monarquía constituyente = 4
 
-Otros = 5
+  Otros = 5
 
 Desempleo = 
 
-Conflictos =
+Conflictos = presencia de conflictos internos en cada país hasta el 2023
 
 
 
