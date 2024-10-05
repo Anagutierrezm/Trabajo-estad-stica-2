@@ -8,7 +8,7 @@ Industrial = tasa de crecimiento de la producción industrial por país
 
 Poblacion = número de personas dentro del país hasta el año 2023
 
-
+PBI = cantidad en millones de euros de PBI anual
 
 
 
