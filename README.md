@@ -14,11 +14,19 @@ PBI = cantidad en millones de euros de PBI anual
 
 IDH = índice de desarrollo humano por país
 
-Gobierno = tipo de gobierno 
+Gobierno = tipo de gobierno:
 
+República parlamentaria = 1
 
+República presidencial = 2
 
-Desempleo =
+República semipresidencial = 3
+
+Monarquía constituyente = 4
+
+Otros = 5
+
+Desempleo = 
 
 Conflictos =
 
