@@ -10,7 +10,7 @@ Poblacion = número de personas dentro del país hasta el año 2023
 
 PBI = cantidad en millones de euros de PBI anual
 
-
+IDH = índice de desarrollo humano por país
 
 
 
