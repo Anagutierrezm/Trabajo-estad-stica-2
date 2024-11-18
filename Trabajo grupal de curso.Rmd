@@ -1,0 +1,210 @@
+---
+title: "Trabajo de curso"
+author: "Ana Gutierrez y Ana Moreno"
+date: "2024-11-16"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(flexdashboard)
+```
+
+# Mapa
+
+```{r}
+library(rio)
+dregre=import("datafinal.xlsx")
+print(dregre)
+```
+
+```{r}
+str(dregre$Pais)
+str(dregre$Inmigrantes)
+str(dregre$Poblacion)
+str(dregre$Industrial)
+str(dregre$PBI)
+str(dregre$IDH)
+str(dregre$Gobierno)
+str(dregre$Desempleo)
+str(dregre$Conflictos)
+```
+
+```{r}
+unique(dregre$Inmigrantes)
+```
+
+```{r}
+dregre$Inmigrantes <- gsub(" ", "", dregre$Inmigrantes)
+
+dregre$inmigr <- as.numeric(dregre$Inmigrantes)
+str(dregre$inmigr)
+
+```
+
+```{r}
+dregre$Poblacion <- gsub(" ", "", dregre$Poblacion)
+
+dregre$pobla <- as.numeric(dregre$Poblacion)
+str(dregre$pobla)
+```
+Regresión lineal {data-icon="fa-signal"}
+===================================== 
+
+Row {data-width=650}
+-----------------------------------------------------------------------
+
+### Modelo n°1:
+
+H1:Existe una relación positiva entre el Índice de Desarrollo Humano (IDH) y la proporción de mujeres en el parlamento.
+
+H2:El incremento en la representación de mujeres en el parlamento está asociado con una mejora en los indicadores de desarrollo (IDH) con el tiempo.
+
+```{r}
+modelo1=formula(inmigr~Gobierno)
+regre1=lm(modelo1, data = dregre)
+summary(regre1)
+```
+Existe significancia porque el p-value es menor a 0.05.
+
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+###  BOXPLOT:
+
+```{r}
+library(ggplot2)
+ggplot(dregre, aes(x=inmigr, y=Conflictos)) + 
+  geom_boxplot() + 
+  geom_jitter(shape=16, position=position_jitter(0.2),alpha=0.6) +#para agregar los casos como puntos
+  theme_classic()
+```
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+El gráfico de dispersión muestra la relación entre el número de inmigrantes (inmigr) y la ocurrencia de conflictos en los países analizados, donde los puntos están coloreados de acuerdo con la intensidad de conflictos. Observamos que la mayoría de los países con valores bajos de inmigración presentan una amplia variabilidad en la intensidad de conflictos, que va desde cero hasta valores máximos. Esto podría sugerir que la cantidad de inmigrantes no es el único determinante de la incidencia de conflictos y que otros factores, como las dinámicas sociales, políticas y económicas, podrían influir significativamente.
+Por otro lado, en el rango de inmigración alta (más allá de 10 millones), los datos son escasos y muestran una menor variabilidad en conflictos, con valores predominantemente bajos. Esto podría reflejar que los países con flujos migratorios muy altos han logrado, en muchos casos, gestionar mejor las tensiones relacionadas con la inmigración, aunque también podría deberse a la escasez de observaciones en este rango. Este gráfico resalta la necesidad de explorar factores adicionales, como políticas de integración, niveles de desarrollo o antecedentes históricos, para comprender las dinámicas entre migración y conflictos.
+
+
+
+Análisis de la regresión {data-icon="fa-table"}
+=====================================     
+
+Column {data-width=500} {.tabset}
+-----------------------------------------------------------------------
+
+### Histograma
+
+```{r}
+ggplot(data.frame(dregre), aes(x = inmigr)) +
+  geom_histogram(aes(y = after_stat(density)), 
+                 color = "green", fill = "white") +
+  geom_density(fill = "blue", alpha = 0.2) + 
+  geom_vline(xintercept = mean(dregre$inmigr, na.rm = TRUE), 
+             color = "red", linetype = "dashed", size = 1) + 
+  geom_vline(xintercept = median(dregre$inmigr, na.rm = TRUE), 
+             color = "blue", linetype = "dashed", size = 1) +
+  xlim(0, 3e6) +  # Ajustar el rango del eje X
+  theme_minimal() +
+  xlab("inmigr") +
+  ylab("Density")
+```
+
+
+El histograma revela una distribución sesgada hacia la derecha, lo que indica que algunos países alcanzan niveles excepcionalmente altos en el Índice de Desarrollo Humano (IDH). Esto sugiere que han logrado avances significativos en áreas clave como la educación, la salud y la economía. Entre estos países, destacan Emiratos Árabes Unidos, Catar y Singapur, que han implementado políticas efectivas y sostenidas para alcanzar este desarrollo. Estos países sirven como ejemplos de cómo la inversión en capital humano y la diversificación económica pueden traducirse en altos niveles de bienestar. Sin embargo, el gráfico también muestra una cola hacia valores bajos, reflejando que algunos países aún enfrentan importantes desafíos para mejorar su desarrollo humano. Estos países, en su mayoría, podrían estar afectados por limitaciones estructurales, conflictos, desigualdad económica o falta de acceso a servicios esenciales, lo que retrasa su progreso en comparación con las naciones más avanzadas. Este contraste destaca las brechas significativas que persisten a nivel global en términos de desarrollo humano.
+
+### Normalidad
+
+```{r}
+plot(regre1, 2, caption = '');title(main="Normalidad")
+```
+
+El gráfico verifica si los residuos siguen una distribución normal. La mayor parte de los puntos sigue la línea teórica, pero en los extremos se observan desviaciones significativas, lo que sugiere que los residuos no son perfectamente normales. Esto podría influir en la validez de las inferencias estadísticas del modelo.
+
+### Linealidad
+
+```{r}
+plot(regre1, 1,caption = '');title(main="Linealidad")
+```
+
+Este gráfico evalúa si existe una relación lineal entre las variables explicativas y la respuesta. La línea roja indica la tendencia de los residuos frente a los valores ajustados. Aunque la mayoría de los puntos parecen distribuirse alrededor de cero, hay algunos puntos atípicos (como el caso 47) que generan desviaciones notables. Esto podría indicar que la relación no es completamente lineal o que los datos contienen outliers que afectan el ajuste.
+
+
+### Homocedasticidad
+
+```{r}
+plot(regre1, 3, caption = '');title(main="Homocedasticidad")
+```
+
+Este gráfico evalúa si la variabilidad de los residuos es constante (homocedasticidad). La línea roja muestra un ligero patrón ascendente, indicando heteroscedasticidad, es decir, que la variabilidad de los residuos aumenta con los valores ajustados. Esto puede afectar la precisión de los errores estándar estimados.
+
+
+### Valores influyentes:
+
+```{r}
+plot(regre1, 5, caption = '');title(main="Influyentes")
+```
+
+Este gráfico mide el impacto de observaciones individuales sobre el modelo. El caso 47 sobresale como altamente influyente según la distancia de Cook, lo que sugiere que tiene un efecto desproporcionado en el ajuste del modelo. También los casos 30 y 42 presentan cierto nivel de influencia.
+
+### Mejor gráfico
+
+```{r}
+plot(regre1, 2)
+```
+
+Este gráfico mide el impacto de observaciones individuales sobre el modelo. El caso 47 sobresale como altamente influyente según la distancia de Cook, lo que sugiere que tiene un efecto desproporcionado en el ajuste del modelo. También los casos 30 y 42 presentan cierto nivel de influencia.
+
+
+Clúster {data-icon="fa-table"}
+=====================================  
+
+```{r}
+library(tidyverse)
+library(cluster)
+library(factoextra)
+```
+
+```{r}
+data_cluster <- dregre%>% 
+  select(inmigr, Desempleo) %>% 
+  na.omit()  
+
+data_cluster_norm <- scale(data_cluster)
+```
+
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+### Clúster
+```{r}
+set.seed(123) 
+kmeans_result <- kmeans(data_cluster_norm, centers = 3)
+
+
+dregre$Cluster <- as.factor(kmeans_result$cluster)
+
+
+fviz_cluster(kmeans_result, data = data_cluster_norm, 
+             geom = "point", ellipse.type = "convex", 
+             ggtheme = theme_minimal())
+```
+
+
+Column {data-width=500}
+-----------------------------------------------------------------------
+
+
+### Interpretación
+
+Primer clúster: Agrupa países con altos niveles de desarrollo humano y baja incidencia de conflictos. Estos países generalmente presentan economías avanzadas, políticas estables y sistemas de bienestar social sólidos. Es probable que también cuenten con una gestión efectiva de la migración, lo que contribuye a su estabilidad.
+
+Segundo clúster: Incluye países con niveles intermedios de desarrollo humano y una variabilidad moderada en conflictos y migración. Estos países pueden estar en transición hacia un mayor desarrollo, enfrentando desafíos en infraestructura, educación o integración de inmigrantes.
+
+Tercer clúster: Representa países con bajo desarrollo humano, altos niveles de conflictos y flujos migratorios más limitados. Estos países suelen enfrentar problemas estructurales significativos, como desigualdad económica, inestabilidad política o falta de acceso a servicios básicos.
