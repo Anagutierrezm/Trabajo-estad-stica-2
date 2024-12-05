@@ -1,5 +1,4 @@
-# Link del trabajo final: [https://rpubs.com/Anagm/1246656](https://rpubs.com/anamoreno1912/1253768) 
-
+# Link del trabajo final: https://rpubs.com/anamoreno1912/1253781  
 # Trabajo-estad-stica-2
 
 Diccionario del trabajo:
