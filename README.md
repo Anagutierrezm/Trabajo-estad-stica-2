@@ -1,4 +1,4 @@
-# Link del trabajo final: https://rpubs.com/Anagm/1246656
+# Link del trabajo final: [https://rpubs.com/Anagm/1246656](https://rpubs.com/anamoreno1912/1253768) 
 
 # Trabajo-estad-stica-2
 
